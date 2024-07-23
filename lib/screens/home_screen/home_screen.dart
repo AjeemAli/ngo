@@ -53,6 +53,8 @@ class HomeScreen extends StatelessWidget {
               const Heading(text: 'Latest News and Updates'),
               const Gap(10),
               upcomingEvent(),
+              upcomingEvent(),
+              upcomingEvent(),
               const Gap(10),
               const Heading(text: 'Donation Call-to-Action'),
               const Gap(10),

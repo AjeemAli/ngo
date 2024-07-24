@@ -1,9 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:ngo/common/colors.dart';
+import 'package:ngo/widgets/contact_information.dart';
 import 'package:ngo/widgets/custom_heading.dart';
 
+import '../../common/json_data.dart';
 import '../../widgets/common_container.dart';
+import '../../widgets/our_team_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -53,8 +57,6 @@ class HomeScreen extends StatelessWidget {
               const Heading(text: 'Latest News and Updates'),
               const Gap(10),
               upcomingEvent(),
-              upcomingEvent(),
-              upcomingEvent(),
               const Gap(10),
               const Heading(text: 'Donation Call-to-Action'),
               const Gap(10),
@@ -66,15 +68,27 @@ class HomeScreen extends StatelessWidget {
               const Gap(10),
               const Heading(text: 'Our Team'),
               const Gap(10),
-              upcomingEvent(),
+              SizedBox(
+                height: height * 0.85,
+                child: ourTeamWidget(),
+              ),
               const Gap(10),
               const Heading(text: 'Impact Stories'),
               const Gap(10),
               upcomingEvent(),
               const Gap(10),
-              const Heading(text: 'Contact information'),
+              const Heading(text: 'Contact us'),
               const Gap(10),
-              upcomingEvent(),
+              const ContactInformationWidget(
+                ngoName: 'Save Children NGO',
+                address: '123 NGO Street, City, Country',
+                phoneNumber: '+123456789',
+                email: 'contact@ngo.org',
+                website: 'https://www.ngo.org',
+                facebookUrl: 'https://facebook.com/ngo',
+                twitterUrl: 'https://twitter.com/ngo',
+                instagramUrl: 'https://instagram.com/ngo',
+              ),
               const Gap(10),
             ],
           ),
@@ -126,6 +140,61 @@ class HomeScreen extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+
+  Widget ourTeamWidget() {
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisSpacing: 2,
+        crossAxisSpacing: 2,
+        childAspectRatio: 0.8,
+      ),
+      itemCount: ourTeam.length,
+      physics: const NeverScrollableScrollPhysics(),
+      itemBuilder: (context, index) {
+        return Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Colors.grey[300]!)),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          //  color: Colors.grey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                height: 120,
+                width: 140,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/user_5668494.png'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                ourTeam[index]['name'],
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blueGrey,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                ourTeam[index]['role'],
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.blueGrey,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

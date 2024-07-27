@@ -2,6 +2,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:ngo/common/colors.dart';
+import 'package:ngo/screens/home_screen/widget/event_card_widget.dart';
+import 'package:ngo/screens/home_screen/widget/impact_story_widget.dart';
+import 'package:ngo/screens/home_screen/widget/volenteer_card_widget.dart';
 import 'package:ngo/widgets/contact_information.dart';
 import 'package:ngo/widgets/custom_heading.dart';
 
@@ -44,38 +47,34 @@ class HomeScreen extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              const Heading(
-                text: 'Welcoming Message',
-              ),
-              const Gap(10),
               carouselSlider(),
               const Gap(10),
-              const Heading(text: 'Upcoming Events'),
+              const Heading(text: 'Upcoming Events',view: 'view all',),
               const Gap(10),
               upcomingEvent(),
               const Gap(10),
-              const Heading(text: 'Latest News and Updates'),
+              const Heading(text: 'Latest News and Updates',view: 'view all',),
               const Gap(10),
               upcomingEvent(),
               const Gap(10),
-              const Heading(text: 'Donation Call-to-Action'),
+              const Heading(text: 'Donation Call'),
               const Gap(10),
-              upcomingEvent(),
+              donationCallToAction(),
               const Gap(10),
-              const Heading(text: 'Volunteer Opportunities'),
+              const Heading(text: 'Volunteer Opportunities',view: 'view all',),
               const Gap(10),
-              upcomingEvent(),
+              volunteerOpportunities(),
               const Gap(10),
-              const Heading(text: 'Our Team'),
+              const Heading(text: 'Our Team', view: 'view all',),
               const Gap(10),
               SizedBox(
-                height: height * 0.85,
+                height: height * 0.75,
                 child: ourTeamWidget(),
               ),
               const Gap(10),
-              const Heading(text: 'Impact Stories'),
+              const Heading(text: 'Impact Stories',view: 'view all',),
               const Gap(10),
-              upcomingEvent(),
+              impactStories(),
               const Gap(10),
               const Heading(text: 'Contact us'),
               const Gap(10),
@@ -132,10 +131,9 @@ class HomeScreen extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemCount: childList.length,
         itemBuilder: (context, index) {
-          return ContainerCard(
-            title: 'Save Child',
-            description:
-                'Save Children by NGO is dedicated to protecting and nurturing vulnerable children, ensuring their safety, health, and education for a brighter future',
+          return EventCard(
+            title: 'Event Title $index',
+            description: 'Description for event $index. Details about what will happen during this event.',
             imageUrl: childList[index],
           );
         },
@@ -144,6 +142,7 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget ourTeamWidget() {
+    // Assume `ourTeam` is a List<Map<String, String>> defined elsewhere.
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
@@ -154,12 +153,13 @@ class HomeScreen extends StatelessWidget {
       itemCount: ourTeam.length,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
+        final teamMember = ourTeam[index];
         return Container(
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.grey[300]!)),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Colors.grey[300]!),
+          ),
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          //  color: Colors.grey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.end,
@@ -169,14 +169,14 @@ class HomeScreen extends StatelessWidget {
                 width: 140,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/images/user_5668494.png'),
+                    image: AssetImage(teamMember['image'] ?? 'assets/images/user_5668494.png'),
                     fit: BoxFit.fill,
                   ),
                 ),
               ),
               const SizedBox(height: 8),
               Text(
-                ourTeam[index]['name'],
+                teamMember['name'] ?? 'Name',
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
@@ -185,7 +185,7 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                ourTeam[index]['role'],
+                teamMember['role'] ?? 'Role',
                 style: const TextStyle(
                   fontSize: 12,
                   color: Colors.blueGrey,
@@ -197,4 +197,82 @@ class HomeScreen extends StatelessWidget {
       },
     );
   }
+
+  Widget impactStories() {
+    return SizedBox(
+      height: 300,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: childList.length, // or another list of impact stories
+        itemBuilder: (context, index) {
+          return ImpactStoryCard(
+            title: 'Impact Story $index',
+            description: 'Description of impact story $index. How the NGO has made a difference.',
+            imageUrl: childList[index],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget volunteerOpportunities() {
+    return SizedBox(
+      height: 300,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: childList.length, // or another list of volunteer opportunities
+        itemBuilder: (context, index) {
+          return VolunteerCard(
+            title: 'Volunteer Role $index',
+            description: 'Description for volunteer role $index. Details about what volunteers will do.',
+            imageUrl: childList[index],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget donationCallToAction() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.blueGrey[50],
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Donate Now',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 10),
+          const Text(
+            'Your contribution can make a significant difference. Please consider making a donation to help support our cause.',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.blueGrey,
+            ),
+          ),
+          const SizedBox(height: 20),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                // Action to donate
+              },
+              child: const Text('Donate'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+
+
+
 }
